@@ -43,21 +43,25 @@ render_boxes :: () {
             case .FRACTION;
                 value_string = tprint("%/%", value, value_max);
         };
-        /*Simp.immediate_quad(
-            x + xx BOX_PADDING,
-            y + xx height - xx game.font.character_height - xx FONT_HEIGHT_ADJUST - xx BOX_PADDING,
-            x + xx BOX_PADDING + xx Simp.get_string_width_in_pixels(game.font, value_string),
-            y + xx height - xx BOX_PADDING,
-            .{0,1,1,1}
-        );*/
+
+        
+        
         draw_text_outlined(
             game.font,
             xx x + BOX_PADDING,
-            xx y + cast(int) height - game.font.character_height - FONT_HEIGHT_ADJUST - BOX_PADDING,
+            xx y + cast(int) height - FONT_SIZE - BOX_PADDING,
             value_string,
             text_color,
             text_outline_color
         );
+        /*Simp.set_shader_for_color();
+        Simp.immediate_quad(
+            x + xx BOX_PADDING,
+            y + xx height - xx FONT_SIZE - xx BOX_PADDING,
+            x + xx BOX_PADDING + xx string_width(value_string),
+            y + xx height - xx BOX_PADDING,
+            .{1,0,0,1}
+        );*/
     }
 }
 
@@ -101,7 +105,7 @@ create_box_quest :: (x: u32, y: u32, width: u32, height: u32) {
         value_maxed := box_is_full(box);
         if mouse_in_box(box) {
             if (value_maxed)
-                border_color = .{0.55,0.55,0.55,1};
+                border_color = .{0.75,0.75,0.75,1};
             else
                 border_color = .{1,1,1,1};
         }
@@ -112,11 +116,11 @@ create_box_quest :: (x: u32, y: u32, width: u32, height: u32) {
                 border_color = .{0.5,0.5,0.5,1};
         }
         if (value_maxed) {
-            foreground_color = .{0.45,0.33,0.05,1};
+            foreground_color = C_STM_50;//.{0.45,0.33,0.05,1};
             text_color = .{0.8,0.8,0.8,1};
         }
         else {
-            foreground_color = .{1,0,1,1};
+            foreground_color = C_RCV;//.{1,0,1,1};
             text_color = .{1,1,1,1};
         }
     };
@@ -136,26 +140,25 @@ create_box_enemy :: (x: u32, y: u32, width: u32, height: u32) {
     box.y = xx y;
     box.width = width;
     box.height = height;
-    box.foreground_color = .{1,0.8,0,1};
-    box.background_color = .{1,0,0,1};
+    box.foreground_color = C_LIF;//.{1,0.8,0,1};
+    box.background_color = .{0.75,0.15,0.15,1};
     box.update = (box: *Box, dt: float) {
         using box;
         value_maxed := box_is_empty(box);
-        if mouse_in_box(box) {
-            if (value_maxed)
-                border_color = .{0.5,0.5,0.5,1};
-            else
-                border_color = .{1,1,1,1};
+        if (value_maxed)
+            border_color = .{0.2,0.2,0.2,1};
+        else if mouse_in_box(box) {
+            border_color = .{1,1,1,1};
         }
         else {
             border_color = .{0.5,0.5,0.5,1};
         }
         if (value_maxed) {
-            background_color = .{0.3,0.3,0.3,1};
-            text_color = .{0.8,0.8,0.8,1};
+            background_color = .{0.13,0.13,0.13,1};
+            text_color = .{0.4,0.4,0.4,1};
         }
         else {
-            background_color = .{1,0,0,1};
+            box.background_color = .{0.75,0.15,0.15,1};
             text_color = .{1,1,1,1};
         }
     };
