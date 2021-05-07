@@ -17,12 +17,15 @@ WINDOW_HEIGHT   : s32 : 480;
 RENDER_WIDTH    : u32 : 640;
 RENDER_HEIGHT   : u32 : 480;
 
-HUD_HEIGHT      : u32 : 44;
+HUD_HEIGHT      : u32 : 46;
 GAME_PADDING    : u32 : 4;
 
 FONT_FILENAME :: "5Monopix.ttf";
 FONT_TTFSIZE  :: 4;
 FONT_SIZE     :: 6;
+/*FONT_FILENAME :: "type_writer.ttf";
+FONT_TTFSIZE  :: 8;
+FONT_SIZE     :: 8;*/
 
 C_GOL  : Vector4 : .{1,0.8,0,1};
 C_EXP    : Vector4 : .{1,0,1,1};
@@ -207,23 +210,24 @@ input_pressed :: (key: Key_Code) -> bool {
 }
 
 get_player_level :: () -> u32 {
-    return game.player.exp / 100; //TODO: improve
+    return 1 + game.player.exp / 100; //TODO: improve
 }
 
 render_hud :: () {
     Simp.set_shader_for_color();
     Simp.immediate_quad(0, xx RENDER_HEIGHT, xx RENDER_WIDTH, cast(float) RENDER_HEIGHT - xx HUD_HEIGHT, C_HUD_BACKGROUND);
+    LINE_SIZE :: FONT_SIZE + 5;
     draw_text_outlined(game.font, xx GAME_PADDING, RENDER_HEIGHT - xx GAME_PADDING - FONT_SIZE, tprint("LVL %", get_player_level()), .{1,1,1,1}, .{0,0,0,1});
-    draw_text_outlined(game.font, xx GAME_PADDING, RENDER_HEIGHT - xx GAME_PADDING - FONT_SIZE - 10, tprint("EXP %", game.player.exp), C_EXP, .{0,0,0,1});
-    draw_text_outlined(game.font, xx GAME_PADDING, RENDER_HEIGHT - xx GAME_PADDING - FONT_SIZE - 20, tprint("LIF %/%", game.player.lif, game.player.lif_max), C_LIF, .{0,0,0,1});
-    draw_text_outlined(game.font, xx GAME_PADDING, RENDER_HEIGHT - xx GAME_PADDING - FONT_SIZE - 30, tprint("STM %/%", game.player.stm, game.player.stm_max), C_STM, .{0,0,0,1});
+    draw_text_outlined(game.font, xx GAME_PADDING, RENDER_HEIGHT - xx GAME_PADDING - FONT_SIZE - LINE_SIZE, tprint("EXP %", game.player.exp), C_EXP, .{0,0,0,1});
+    draw_text_outlined(game.font, xx GAME_PADDING, RENDER_HEIGHT - xx GAME_PADDING - FONT_SIZE - LINE_SIZE * 2, tprint("LIF %/%", game.player.lif, game.player.lif_max), C_LIF, .{0,0,0,1});
+    draw_text_outlined(game.font, xx GAME_PADDING, RENDER_HEIGHT - xx GAME_PADDING - FONT_SIZE - LINE_SIZE * 3, tprint("STM %/%", game.player.stm, game.player.stm_max), C_STM, .{0,0,0,1});
     
-    draw_text_outlined(game.font, xx GAME_PADDING + 64, RENDER_HEIGHT - xx GAME_PADDING - FONT_SIZE - 10, tprint("ATK %", game.player.atk), C_ATK, .{0,0,0,1});
-    draw_text_outlined(game.font, xx GAME_PADDING + 64, RENDER_HEIGHT - xx GAME_PADDING - FONT_SIZE - 20, tprint("DEF %", game.player.def), C_DEF, .{0,0,0,1});
-    draw_text_outlined(game.font, xx GAME_PADDING + 64, RENDER_HEIGHT - xx GAME_PADDING - FONT_SIZE - 30, tprint("RCV %", game.player.rcv), C_RCV, .{0,0,0,1});
+    draw_text_outlined(game.font, xx GAME_PADDING + 100, RENDER_HEIGHT - xx GAME_PADDING - FONT_SIZE - LINE_SIZE, tprint("ATK %", game.player.atk), C_ATK, .{0,0,0,1});
+    draw_text_outlined(game.font, xx GAME_PADDING + 100, RENDER_HEIGHT - xx GAME_PADDING - FONT_SIZE - LINE_SIZE * 2, tprint("DEF %", game.player.def), C_DEF, .{0,0,0,1});
+    draw_text_outlined(game.font, xx GAME_PADDING + 100, RENDER_HEIGHT - xx GAME_PADDING - FONT_SIZE - LINE_SIZE * 3, tprint("RCV %", game.player.rcv), C_RCV, .{0,0,0,1});
 
-    draw_text_outlined(game.font, xx GAME_PADDING + 112, RENDER_HEIGHT - xx GAME_PADDING - FONT_SIZE - 10, tprint("GOL %", game.player.gol), C_GOL, .{0,0,0,1});
-    draw_text_outlined(game.font, xx GAME_PADDING + 112, RENDER_HEIGHT - xx GAME_PADDING - FONT_SIZE - 20, tprint("KEY %", game.player.key), C_KEY, .{0,0,0,1});
+    draw_text_outlined(game.font, xx GAME_PADDING + 160, RENDER_HEIGHT - xx GAME_PADDING - FONT_SIZE - LINE_SIZE, tprint("GOL %", game.player.gol), C_GOL, .{0,0,0,1});
+    draw_text_outlined(game.font, xx GAME_PADDING + 160, RENDER_HEIGHT - xx GAME_PADDING - FONT_SIZE - LINE_SIZE * 2, tprint("KEY %", game.player.key), C_KEY, .{0,0,0,1});
     Simp.set_shader_for_color();
 }
 
