@@ -211,9 +211,6 @@ per_frame_update_mouse_position :: () {
         current_mouse_x = max(mouse_x, 0);
         current_mouse_y = max(mouse_y, 0);
     }
-
-    // print("mouse(%, %)\n", mouse_x, mouse_y);
-    // print("current_mouse(%, %)\n\n", current_mouse_x, current_mouse_y);
 }
 
 input_pressed :: (key: Key_Code) -> bool {
@@ -222,7 +219,6 @@ input_pressed :: (key: Key_Code) -> bool {
 
 render_hud :: () {
     Simp.set_shader_for_color();
-    //Simp.immediate_quad(0, xx RENDER_HEIGHT, xx RENDER_WIDTH, cast(float) RENDER_HEIGHT - xx HUD_HEIGHT, C_HUD_BACKGROUND);
     Simp.immediate_quad(0, 0, xx HUD_WIDTH, xx RENDER_HEIGHT, C_HUD_BACKGROUND);
     LINE_SIZE :: FONT_SIZE + 5;
     draw_hud_stat(xx GAME_PADDING, RENDER_HEIGHT - xx GAME_PADDING - FONT_SIZE, 100, "LVL", tprint("%", get_player_level()), .{1,1,1,1}, 0.0);
@@ -242,7 +238,6 @@ render_hud :: () {
 draw_hud_stat :: (x: s64, y: s64, width: s64, label: string, value_label: string, color: Vector4, progress: float) {
     Simp.set_shader_for_color();
     Simp.immediate_quad(xx x - 2.0, cast(float) y + xx FONT_SIZE + 2.0, cast(float) x + xx string_width(label) + 2.0, cast(float) y - 2.0, color);
-    //draw_text_outlined(game.font, x, y, label, color, .{0,0,0,1});
     Simp.draw_text(game.font, x, y, label, .{0,0,0,1});
     Simp.draw_text(game.font, x + string_width(label) + 4, y, value_label, color);
 }
