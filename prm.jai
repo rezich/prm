@@ -28,13 +28,13 @@ FONT_TTFSIZE  :: 4;
 FONT_SIZE     :: 6;*/
 FONT_FILENAME :: "type_writer.ttf";
 FONT_TTFSIZE  :: 8;
-FONT_SIZE     :: 8;
+FONT_SIZE     :: 7;
 
 C_GOL    : Vector4 : .{1,0.8,0,1};
 C_EXP    : Vector4 : .{1,0,1,1};
 C_LIF    : Vector4 : .{0,0.66,0,1}; //.{1,0.8,0,1};
-C_STM    : Vector4 : .{0,0.88,0.88,1};
-C_STM_50 : Vector4 : .{0,0.44,0.44,1};
+C_STM    : Vector4 : .{0,0.5,0.5,1};
+C_STM_50 : Vector4 : .{0,0.25,0.25,1};
 
 C_ATK    : Vector4 : .{0.88,0,0,1};//.{0.75,0.15,0.15,1};
 C_DEF    : Vector4 : .{0,0.88,0,1};
@@ -208,8 +208,8 @@ per_frame_update_mouse_position :: () {
     mouse_x, mouse_y, success := get_mouse_pointer_position(true);
 
     if success {
-        current_mouse_x = mouse_x;
-        current_mouse_y = mouse_y;
+        current_mouse_x = max(mouse_x, 0);
+        current_mouse_y = max(mouse_y, 0);
     }
 
     // print("mouse(%, %)\n", mouse_x, mouse_y);
@@ -240,8 +240,11 @@ render_hud :: () {
 }
 
 draw_hud_stat :: (x: s64, y: s64, width: s64, label: string, value_label: string, color: Vector4, progress: float) {
-    draw_text_outlined(game.font, x, y, label, color, .{0,0,0,1});
-    Simp.draw_text(game.font, x + string_width(label) + string_width("  "), y, value_label, color);
+    Simp.set_shader_for_color();
+    Simp.immediate_quad(xx x - 2.0, cast(float) y + xx FONT_SIZE + 2.0, cast(float) x + xx string_width(label) + 2.0, cast(float) y - 2.0, color);
+    //draw_text_outlined(game.font, x, y, label, color, .{0,0,0,1});
+    Simp.draw_text(game.font, x, y, label, .{0,0,0,1});
+    Simp.draw_text(game.font, x + string_width(label) + 4, y, value_label, color);
 }
 
 string_width :: (str: string) -> int {

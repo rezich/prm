@@ -115,7 +115,7 @@ create_box_quest :: (x: u32, y: u32, width: u32, height: u32) {
                 border_color = .{0.5,0.5,0.5,1};
         }
         if (value_maxed) {
-            foreground_color = C_STM_50;//.{0.45,0.33,0.05,1};
+            foreground_color = C_STM;//.{0.45,0.33,0.05,1};
             text_color = .{0.8,0.8,0.8,1};
         }
         else {
