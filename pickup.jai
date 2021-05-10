@@ -1,18 +1,19 @@
 PickupCollectFunction :: #type(pickup: *Pickup);
 
-PICKUP_BOUNCES         :: 2;
-PICKUP_WIDTH           :: 3;
-PICKUP_MARGIN          :: 3;
-PICKUP_LIFETIME        :: 3.0;
-PICKUP_INVINCIBLE_TIME :: 0.25;
+PICKUP_BOUNCES          :: 2;
+PICKUP_WIDTH            :: 5;
+PICKUP_MARGIN           :: 3;
+PICKUP_LIFETIME         :: 3.0;
+PICKUP_INVINCIBLE_TIME  :: 0.25;
 
-PICKUP_X_VELOCITY_MAX  :: 2.25;
-PICKUP_FRICTION        :: 1.25;
+PICKUP_X_VELOCITY_MAX   :: 2.25;
+PICKUP_FRICTION         :: 1.25;
 
-PICKUP_Y_VELOCITY_MIN  :: 3.0;
-PICKUP_Y_VELOCITY_MAX  :: 4.5;
-PICKUP_GRAVITY         :: 15.0;
-PICKUP_BOUNCE_DECAY    :: 0.75;
+PICKUP_Y_VELOCITY_MIN   :: 3.0;
+PICKUP_Y_VELOCITY_MAX   :: 4.5;
+PICKUP_GRAVITY          :: 15.0;
+PICKUP_BOUNCE_DECAY_MIN :: 0.65;
+PICKUP_BOUNCE_DECAY_MAX :: 0.85;
 
 Pickup_Type :: enum {
     EXP;
@@ -47,7 +48,7 @@ render_pickups :: () {
         }
         draw_text_outlined(
             game.font,
-            x - 1, // temporary?
+            x - PICKUP_WIDTH / 2,
             y - FONT_SIZE / 2,
             tprint("%", value),
             color,
@@ -73,7 +74,7 @@ update_pickups :: (dt: float) {
                 y_velocity -= PICKUP_GRAVITY * dt;
             }
             else if bounces_remaining > 0 {
-                y_velocity = -y_velocity * PICKUP_BOUNCE_DECAY;
+                y_velocity = -y_velocity * random_get_within_range(PICKUP_BOUNCE_DECAY_MIN, PICKUP_BOUNCE_DECAY_MAX);
                 bounces_remaining -= 1;
             }
             else {

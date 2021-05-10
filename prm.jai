@@ -23,12 +23,12 @@ HUD_HEIGHT      : u32 : 0; // remove?
 HUD_WIDTH       : u32 : 72;
 GAME_PADDING    : u32 : 4;
 
-FONT_FILENAME :: "5Monopix.ttf";
+/*FONT_FILENAME :: "5Monopix.ttf";
 FONT_TTFSIZE  :: 4;
-FONT_SIZE     :: 6;
-/*FONT_FILENAME :: "type_writer.ttf";
+FONT_SIZE     :: 6;*/
+FONT_FILENAME :: "type_writer.ttf";
 FONT_TTFSIZE  :: 8;
-FONT_SIZE     :: 8;*/
+FONT_SIZE     :: 8;
 
 C_GOL    : Vector4 : .{1,0.8,0,1};
 C_EXP    : Vector4 : .{1,0,1,1};
@@ -220,10 +220,6 @@ input_pressed :: (key: Key_Code) -> bool {
     return cast(bool) (input_button_states[key] & Key_Current_State.START);
 }
 
-get_player_level :: () -> u32 {
-    return 1 + game.player.exp / 100; //TODO: improve
-}
-
 render_hud :: () {
     Simp.set_shader_for_color();
     //Simp.immediate_quad(0, xx RENDER_HEIGHT, xx RENDER_WIDTH, cast(float) RENDER_HEIGHT - xx HUD_HEIGHT, C_HUD_BACKGROUND);
@@ -252,14 +248,6 @@ string_width :: (str: string) -> int {
     return Simp.get_string_width_in_pixels(game.font, str) - 1;
 }
 
-try_spending_stm :: (amount: u32) -> bool {
-    if game.player.stm >= amount {
-        game.player.stm -= amount;
-        return true;
-    }
-    return false;
-}
-
 update_player :: (dt: float) {
     using game.player;
     if stm < stm_max {
@@ -271,8 +259,21 @@ update_player :: (dt: float) {
     }
 }
 
+try_spending_stm :: (amount: u32) -> bool {
+    if game.player.stm >= amount {
+        game.player.stm -= amount;
+        return true;
+    }
+    return false;
+}
+get_player_level :: () -> u32 {
+    return 1 + game.player.exp / 100; //TODO: improve
+}
 give_exp :: (amount: u32) {
+    // the following is Probably Not Very Good
+    lvl := get_player_level();
     game.player.exp += amount;
+    if get_player_level() > lvl then level_up();
 }
 give_gol :: (amount: u32) {
     game.player.gol += amount;
