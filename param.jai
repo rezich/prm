@@ -5,11 +5,13 @@
 #import "Math";
 #import "String"; // For path_strip_filename.
 #import "Sloppy_Math";
+#import "Random";
 Simp    :: #import "Simp";
 Pool    :: #import "Pool";
 Texture :: Simp.Texture;
 
 #load "box.jai";
+#load "pickup.jai";
 
 WINDOW_WIDTH    : s32 : 640;
 WINDOW_HEIGHT   : s32 : 480;
@@ -27,7 +29,7 @@ FONT_SIZE     :: 6;
 FONT_TTFSIZE  :: 8;
 FONT_SIZE     :: 8;*/
 
-C_GOL  : Vector4 : .{1,0.8,0,1};
+C_GOL    : Vector4 : .{1,0.8,0,1};
 C_EXP    : Vector4 : .{1,0,1,1};
 C_LIF    : Vector4 : .{0,0.66,0,1}; //.{1,0.8,0,1};
 C_STM    : Vector4 : .{0,0.88,0.88,1};
@@ -42,6 +44,8 @@ C_BACKGROUND     : Vector4 : .{0.05,0.05,0.05,1};
 C_HUD_BACKGROUND : Vector4 : .{0.1,0.1,0.1,1};
 
 TARGET_FPS :: 60;
+
+TEMP_PLAYER_STM_RECOVERY_TIME :: 0.1;
 
 
 current_mouse_x, current_mouse_y: int;
@@ -66,6 +70,7 @@ game: struct {
         lif_max: u32;
         stm: u32;
         stm_max: u32;
+        stm_timer: float;
         rcv: u32;
         atk: u32;
         def: u32;
@@ -81,10 +86,12 @@ init_game :: () {
     lif = lif_max;
     stm_max = 50;
     stm = stm_max;
+    stm_timer = TEMP_PLAYER_STM_RECOVERY_TIME;
     rcv = 10;
     atk = 10;
     def = 10;
     key = 0;
+    random_seed(xx get_time());
 }
 fini_game :: () {
     //Pool.release(*game.pool);
@@ -159,6 +166,8 @@ do_frame :: (window: Window_Type) -> did_render_frame: bool {
 }
 
 update :: (dt: float) {
+    update_pickups(dt);
+    update_player(dt);
     update_boxes(dt);
 }
 
@@ -168,6 +177,7 @@ render :: (window: Window_Type) {
 
     render_hud();
     render_boxes();
+    render_pickups();
 
     draw_text_outlined(game.font, 4, 4, game.fps_string);
 }
@@ -238,4 +248,35 @@ draw_hud_stat :: (x: s64, y: s64, width: s64, label: string, value_label: string
 
 string_width :: (str: string) -> int {
     return Simp.get_string_width_in_pixels(game.font, str) - 1;
+}
+
+try_spending_stm :: (amount: u32) -> bool {
+    if game.player.stm >= amount {
+        game.player.stm -= amount;
+        return true;
+    }
+    return false;
+}
+
+update_player :: (dt: float) {
+    using game.player;
+    if stm < stm_max {
+        stm_timer -= dt;
+        if stm_timer <= 0 {
+            stm_timer += TEMP_PLAYER_STM_RECOVERY_TIME;
+            stm += 1;
+        }
+    }
+}
+
+give_exp :: (amount: u32) {
+    game.player.exp += amount;
+}
+give_gol :: (amount: u32) {
+    game.player.gol += amount;
+}
+level_up :: () {
+    using game.player;
+    stm = stm_max;
+    lif = lif_max;
 }

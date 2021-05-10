@@ -24,6 +24,7 @@ Box :: struct {
     foreground_progress: float;
     update: BoxUpdateFunction;
     click: BoxClickFunction;
+    timer: float;
 }
 
 live_boxes : [..] *Box;
@@ -123,12 +124,13 @@ create_box_quest :: (x: u32, y: u32, width: u32, height: u32) {
         }
     };
     box.click = (box: *Box) {
-        if box.value < box.value_max then box.value += 1;
+        if box.value < box.value_max && try_spending_stm(7) then box.value += 1;
     };
     array_add(*live_boxes, box);
 }
 
 create_box_enemy :: (x: u32, y: u32, width: u32, height: u32) {
+    TEMP_ENEMY_HEAL_TIME :: 1.0;
     box := New(Box);
     box.value_max = 17;
     box.value = box.value_max;
@@ -138,10 +140,18 @@ create_box_enemy :: (x: u32, y: u32, width: u32, height: u32) {
     box.y = xx y;
     box.width = width;
     box.height = height;
+    box.timer = TEMP_ENEMY_HEAL_TIME;
     box.foreground_color = C_LIF;//.{1,0.8,0,1};
     box.background_color = .{0.75,0.15,0.15,1};
     box.update = (box: *Box, dt: float) {
         using box;
+        if !box_is_empty(box) && !box_is_full(box) {
+            timer -= dt;
+            if timer <= 0 {
+                value += 1;
+                timer += TEMP_ENEMY_HEAL_TIME;
+            }
+        }
         value_maxed := box_is_empty(box);
         if (value_maxed)
             border_color = .{0.2,0.2,0.2,1};
@@ -161,7 +171,11 @@ create_box_enemy :: (x: u32, y: u32, width: u32, height: u32) {
         }
     };
     box.click = (box: *Box) {
-        if box.value > 0 then box.value -= 1;
+        if box.value > 0 && try_spending_stm(7) {
+            box.value -= 1;
+            create_pickup(xx current_mouse_x, xx current_mouse_y, Pickup_Type.EXP, 4);
+            create_pickup(xx current_mouse_x, xx current_mouse_y, Pickup_Type.GOL, 4);
+        }
     };
     array_add(*live_boxes, box);
 }
