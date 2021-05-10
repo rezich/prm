@@ -2,7 +2,7 @@ PickupCollectFunction :: #type(pickup: *Pickup);
 
 PICKUP_BOUNCES         :: 2;
 PICKUP_WIDTH           :: 3;
-PICKUP_MARGIN          :: 2;
+PICKUP_MARGIN          :: 3;
 PICKUP_LIFETIME        :: 3.0;
 PICKUP_INVINCIBLE_TIME :: 0.25;
 
@@ -10,7 +10,7 @@ PICKUP_X_VELOCITY_MAX  :: 2.25;
 PICKUP_FRICTION        :: 1.25;
 
 PICKUP_Y_VELOCITY_MIN  :: 3.0;
-PICKUP_Y_VELOCITY_MAX  :: 6.0;
+PICKUP_Y_VELOCITY_MAX  :: 4.5;
 PICKUP_GRAVITY         :: 15.0;
 PICKUP_BOUNCE_DECAY    :: 0.75;
 
@@ -81,6 +81,8 @@ update_pickups :: (dt: float) {
             }
             if x_velocity > 0 then x_velocity = max(x_velocity - PICKUP_FRICTION * dt, 0);
             if x_velocity < 0 then x_velocity = min(x_velocity + PICKUP_FRICTION * dt, 0);
+            if x + x_velocity > xx RENDER_WIDTH || x + x_velocity <= xx HUD_WIDTH then x_velocity = -x_velocity;
+            if y + y_velocity > xx RENDER_HEIGHT then y_velocity = -y_velocity;
             x += xx x_velocity;
             y = max(y + xx y_velocity, y_initial);
         }

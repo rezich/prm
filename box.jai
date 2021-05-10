@@ -124,7 +124,10 @@ create_box_quest :: (x: u32, y: u32, width: u32, height: u32) {
         }
     };
     box.click = (box: *Box) {
-        if box.value < box.value_max && try_spending_stm(7) then box.value += 1;
+        if box.value < box.value_max && try_spending_stm(7) {
+            box.value += 1;
+            drop_loot();
+        }
     };
     array_add(*live_boxes, box);
 }
@@ -173,9 +176,13 @@ create_box_enemy :: (x: u32, y: u32, width: u32, height: u32) {
     box.click = (box: *Box) {
         if box.value > 0 && try_spending_stm(7) {
             box.value -= 1;
-            create_pickup(xx current_mouse_x, xx current_mouse_y, Pickup_Type.EXP, 4);
-            create_pickup(xx current_mouse_x, xx current_mouse_y, Pickup_Type.GOL, 4);
+            drop_loot();
         }
     };
     array_add(*live_boxes, box);
+}
+
+drop_loot :: () {
+    create_pickup(xx current_mouse_x, xx current_mouse_y, Pickup_Type.EXP, 2 + random_get() % 4);
+    create_pickup(xx current_mouse_x, xx current_mouse_y, Pickup_Type.GOL, 2 + random_get() % 4);
 }
