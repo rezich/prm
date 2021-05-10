@@ -217,22 +217,25 @@ render_hud :: () {
     Simp.set_shader_for_color();
     Simp.immediate_quad(0, xx RENDER_HEIGHT, xx RENDER_WIDTH, cast(float) RENDER_HEIGHT - xx HUD_HEIGHT, C_HUD_BACKGROUND);
     LINE_SIZE :: FONT_SIZE + 5;
-    draw_text_outlined(game.font, xx GAME_PADDING, RENDER_HEIGHT - xx GAME_PADDING - FONT_SIZE, tprint("LVL %", get_player_level()), .{1,1,1,1}, .{0,0,0,1});
-    draw_text_outlined(game.font, xx GAME_PADDING, RENDER_HEIGHT - xx GAME_PADDING - FONT_SIZE - LINE_SIZE, tprint("EXP %", game.player.exp), C_EXP, .{0,0,0,1});
-    draw_text_outlined(game.font, xx GAME_PADDING, RENDER_HEIGHT - xx GAME_PADDING - FONT_SIZE - LINE_SIZE * 2, tprint("LIF %/%", game.player.lif, game.player.lif_max), C_LIF, .{0,0,0,1});
-    draw_text_outlined(game.font, xx GAME_PADDING, RENDER_HEIGHT - xx GAME_PADDING - FONT_SIZE - LINE_SIZE * 3, tprint("STM %/%", game.player.stm, game.player.stm_max), C_STM, .{0,0,0,1});
+    draw_hud_stat(xx GAME_PADDING, RENDER_HEIGHT - xx GAME_PADDING - FONT_SIZE, 100, "LVL", tprint("%", get_player_level()), .{1,1,1,1}, 0.0);
+    draw_hud_stat(xx GAME_PADDING, RENDER_HEIGHT - xx GAME_PADDING - FONT_SIZE - LINE_SIZE, 98, "EXP", tprint("%", game.player.exp), C_EXP, 0.0);
+    draw_hud_stat(xx GAME_PADDING, RENDER_HEIGHT - xx GAME_PADDING - FONT_SIZE - LINE_SIZE * 2, 98, "LIF", tprint("%/%", game.player.lif, game.player.lif_max), C_LIF, 0.0);
+    draw_hud_stat(xx GAME_PADDING, RENDER_HEIGHT - xx GAME_PADDING - FONT_SIZE - LINE_SIZE * 3, 98, "STM", tprint("%/%", game.player.stm, game.player.stm_max), C_STM, 0.0);
     
-    draw_text_outlined(game.font, xx GAME_PADDING + 100, RENDER_HEIGHT - xx GAME_PADDING - FONT_SIZE - LINE_SIZE, tprint("ATK %", game.player.atk), C_ATK, .{0,0,0,1});
-    draw_text_outlined(game.font, xx GAME_PADDING + 100, RENDER_HEIGHT - xx GAME_PADDING - FONT_SIZE - LINE_SIZE * 2, tprint("DEF %", game.player.def), C_DEF, .{0,0,0,1});
-    draw_text_outlined(game.font, xx GAME_PADDING + 100, RENDER_HEIGHT - xx GAME_PADDING - FONT_SIZE - LINE_SIZE * 3, tprint("RCV %", game.player.rcv), C_RCV, .{0,0,0,1});
+    draw_hud_stat(xx GAME_PADDING + 100, RENDER_HEIGHT - xx GAME_PADDING - FONT_SIZE - LINE_SIZE, 58, "ATK", tprint("%", game.player.atk), C_ATK, 0.0);
+    draw_hud_stat(xx GAME_PADDING + 100, RENDER_HEIGHT - xx GAME_PADDING - FONT_SIZE - LINE_SIZE * 2, 58, "DEF", tprint("%", game.player.def), C_DEF, 0.0);
+    draw_hud_stat(xx GAME_PADDING + 100, RENDER_HEIGHT - xx GAME_PADDING - FONT_SIZE - LINE_SIZE * 3, 58, "RCV", tprint("%", game.player.rcv), C_RCV, 0.0);
 
-    draw_text_outlined(game.font, xx GAME_PADDING + 160, RENDER_HEIGHT - xx GAME_PADDING - FONT_SIZE - LINE_SIZE, tprint("GOL %", game.player.gol), C_GOL, .{0,0,0,1});
-    draw_text_outlined(game.font, xx GAME_PADDING + 160, RENDER_HEIGHT - xx GAME_PADDING - FONT_SIZE - LINE_SIZE * 2, tprint("KEY %", game.player.key), C_KEY, .{0,0,0,1});
+    draw_hud_stat(xx GAME_PADDING + 160, RENDER_HEIGHT - xx GAME_PADDING - FONT_SIZE - LINE_SIZE, 58, "GOL", tprint("%", game.player.gol), C_GOL, 0.0);
+    draw_hud_stat(xx GAME_PADDING + 160, RENDER_HEIGHT - xx GAME_PADDING - FONT_SIZE - LINE_SIZE * 2, 58, "KEY", tprint("%", game.player.key), C_KEY, 0.0);
     Simp.set_shader_for_color();
+}
+
+draw_hud_stat :: (x: s64, y: s64, width: s64, label: string, value_label: string, color: Vector4, progress: float) {
+    draw_text_outlined(game.font, x, y, label, color, .{0,0,0,1});
+    Simp.draw_text(game.font, x + string_width(label) + string_width("  "), y, value_label, color);
 }
 
 string_width :: (str: string) -> int {
     return Simp.get_string_width_in_pixels(game.font, str) - 1;
 }
-
-//draw_hud_stat :: (x: s64, y: s64, label: string, value_label: string, )

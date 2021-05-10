@@ -44,8 +44,6 @@ render_boxes :: () {
                 value_string = tprint("%/%", value, value_max);
         };
 
-        
-        
         draw_text_outlined(
             game.font,
             xx x + BOX_PADDING,
