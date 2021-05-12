@@ -47,11 +47,7 @@ TARGET_FPS :: 60;
 TEMP_PLAYER_STM_RECOVERY_TIME :: 0.1;
 
 main :: () {
-    window := create_window(window_name="PRM", width=WINDOW_WIDTH, height=WINDOW_HEIGHT);
-    Simp.simp_init(window, WINDOW_WIDTH, WINDOW_HEIGHT, xx RENDER_WIDTH, xx RENDER_HEIGHT);
-
     init_game();
-    init_font();
 
     create_box_quest(HUD_WIDTH + GAME_PADDING + 0, RENDER_HEIGHT - GAME_PADDING - 25, 100, 25);
     create_box_quest(HUD_WIDTH + GAME_PADDING + 104, RENDER_HEIGHT - GAME_PADDING - 25, 100, 25);
@@ -61,9 +57,9 @@ main :: () {
         reset_temporary_storage();
         if game.should_quit break;
         
-        did_render_frame := do_frame(window);
+        did_render_frame := do_frame(game.window);
         if did_render_frame {
-            Simp.swap_buffers(window);
+            Simp.swap_buffers(game.window);
             update_window_events(); // here and not above?
         }
     }

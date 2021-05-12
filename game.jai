@@ -1,4 +1,7 @@
+#import "Windows";
+
 game: struct {
+    window: Window_Type;
     pool: Pool.Pool;
     mode: enum {
         GAME;
@@ -28,6 +31,15 @@ game: struct {
 
 init_game :: () {
     //Pool.set_allocators(*game.pool);
+    x := GetSystemMetrics(SM_CXSCREEN) / 2 - WINDOW_WIDTH / 2;
+    y := GetSystemMetrics(SM_CYSCREEN) / 2 - WINDOW_HEIGHT / 2;
+    game.window = create_window(window_name="PRM", width=WINDOW_WIDTH, height=WINDOW_HEIGHT, window_x=x, window_y=y);
+    Simp.simp_init(game.window, WINDOW_WIDTH, WINDOW_HEIGHT, xx RENDER_WIDTH, xx RENDER_HEIGHT);
+    init_font();
+    reset_game();
+}
+
+reset_game() :: {
     game.mode = .GAME;
     using game.player;
     exp = 0;
