@@ -39,7 +39,7 @@ init_game :: () {
     reset_game();
 }
 
-reset_game() :: {
+reset_game :: () {
     game.mode = .GAME;
     using game.player;
     exp = 0;
