@@ -35,7 +35,13 @@ init_game :: () {
     y := GetSystemMetrics(SM_CYSCREEN) / 2 - WINDOW_HEIGHT / 2;
     game.window = create_window(window_name="PRM", width=WINDOW_WIDTH, height=WINDOW_HEIGHT, window_x=x, window_y=y);
     Simp.simp_init(game.window, WINDOW_WIDTH, WINDOW_HEIGHT, xx RENDER_WIDTH, xx RENDER_HEIGHT);
-    init_font();
+
+    // init font
+    path := path_strip_filename(get_path_of_running_executable());
+    set_working_directory(path);
+    game.font = Simp.get_font_at_size("data", FONT_FILENAME, FONT_TTFSIZE);
+    assert(game.font != null);
+
     reset_game();
 }
 

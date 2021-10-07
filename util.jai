@@ -29,10 +29,3 @@ string_width :: (str: string) -> int {
 input_pressed :: (key: Key_Code) -> bool {
     return cast(bool) (input_button_states[key] & Key_Current_State.START);
 }
-
-init_font :: () {
-    path := path_strip_filename(get_path_of_running_executable());
-    set_working_directory(path);
-    game.font = Simp.get_font_at_size("data", FONT_FILENAME, "", FONT_TTFSIZE);
-    assert(game.font != null);
-}
