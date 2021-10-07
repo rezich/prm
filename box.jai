@@ -4,6 +4,8 @@ BoxClickFunction :: #type(box: *Box);
 BOX_PADDING :: 3;
 BOX_FOREGROUND_LERP_SPEED :: 10.0;
 
+DEBUG_SHOW_BOX_TEXT_AREA :: false;
+
 Box :: struct {
     value: u32;
     value_max: u32;
@@ -53,14 +55,17 @@ render_boxes :: () {
             text_color,
             text_outline_color
         );
-        /*Simp.set_shader_for_color();
-        Simp.immediate_quad(
-            x + xx BOX_PADDING,
-            y + xx height - xx FONT_SIZE - xx BOX_PADDING,
-            x + xx BOX_PADDING + xx string_width(value_string),
-            y + xx height - xx BOX_PADDING,
-            .{1,0,0,1}
-        );*/
+        
+        #if DEBUG_SHOW_BOX_TEXT_AREA {
+            Simp.set_shader_for_color();
+            Simp.immediate_quad(
+                x + xx BOX_PADDING,
+                y + xx height - xx FONT_SIZE - xx BOX_PADDING,
+                x + xx BOX_PADDING + xx string_width(value_string),
+                y + xx height - xx BOX_PADDING,
+                .{1,0,0,1}
+            );
+        }
     }
 }
 

@@ -22,7 +22,7 @@ per_frame_update_mouse_position :: () {
     }
 }
 
-string_width :: (str: string) -> int {
+string_width :: (str: string) -> int #deprecated "This needs to be factored out at some point." {
     return Simp.get_string_width_in_pixels(game.font, str) - 1;
 }
 

@@ -60,10 +60,12 @@ render_pickups :: () {
 update_pickups :: (dt: float) {
     for live_pickups {
         using it;
+
         // invincible timer
         invincible_timer = max(invincible_timer - dt, 0.0);
         // timer
         timer -= dt;
+
         if timer <= 0 {
             array_unordered_remove_by_value(*live_pickups, it);
             continue;
@@ -87,6 +89,7 @@ update_pickups :: (dt: float) {
             x += xx x_velocity;
             y = max(y + xx y_velocity, y_initial);
         }
+
         // collect
         if invincible_timer == 0.0 && mouse_in_pickup(it) {
             if type == {
@@ -121,6 +124,6 @@ mouse_in_pickup :: (pickup: *Pickup) -> bool {
     return
         xx current_mouse_x >= x - PICKUP_MARGIN &&
         xx current_mouse_y >= y - PICKUP_MARGIN &&
-        xx current_mouse_x < x + PICKUP_WIDTH + PICKUP_MARGIN &&
-        xx current_mouse_y < y + FONT_SIZE + PICKUP_MARGIN;
+        xx current_mouse_x <  x + PICKUP_WIDTH + PICKUP_MARGIN &&
+        xx current_mouse_y <  y + FONT_SIZE + PICKUP_MARGIN;
 }

@@ -70,18 +70,22 @@ main :: () {
 render_hud :: () {
     Simp.set_shader_for_color();
     Simp.immediate_quad(0, 0, xx HUD_WIDTH, xx RENDER_HEIGHT, C_HUD_BACKGROUND);
-    LINE_SIZE :: FONT_SIZE + 5;
-    draw_hud_stat(xx GAME_PADDING, RENDER_HEIGHT - xx GAME_PADDING - FONT_SIZE, 100, "LVL", tprint("%", get_player_level()), .{1,1,1,1}, 0.0);
-    draw_hud_stat(xx GAME_PADDING, RENDER_HEIGHT - xx GAME_PADDING - FONT_SIZE - LINE_SIZE, 98, "EXP", tprint("%", game.player.exp), C_EXP, 0.0);
-    draw_hud_stat(xx GAME_PADDING, RENDER_HEIGHT - xx GAME_PADDING - FONT_SIZE - LINE_SIZE * 2, 98, "LIF", tprint("%/%", game.player.lif, game.player.lif_max), C_LIF, 0.0);
-    draw_hud_stat(xx GAME_PADDING, RENDER_HEIGHT - xx GAME_PADDING - FONT_SIZE - LINE_SIZE * 3, 98, "STM", tprint("%/%", game.player.stm, game.player.stm_max), C_STM, 0.0);
-    
-    draw_hud_stat(xx GAME_PADDING, RENDER_HEIGHT - xx GAME_PADDING - FONT_SIZE - LINE_SIZE * 5, 58, "ATK", tprint("%", game.player.atk), C_ATK, 0.0);
-    draw_hud_stat(xx GAME_PADDING, RENDER_HEIGHT - xx GAME_PADDING - FONT_SIZE - LINE_SIZE * 6, 58, "DEF", tprint("%", game.player.def), C_DEF, 0.0);
-    draw_hud_stat(xx GAME_PADDING, RENDER_HEIGHT - xx GAME_PADDING - FONT_SIZE - LINE_SIZE * 7, 58, "RCV", tprint("%", game.player.rcv), C_RCV, 0.0);
 
-    draw_hud_stat(xx GAME_PADDING, RENDER_HEIGHT - xx GAME_PADDING - FONT_SIZE - LINE_SIZE * 9, 58, "GOL", tprint("%", game.player.gol), C_GOL, 0.0);
-    draw_hud_stat(xx GAME_PADDING, RENDER_HEIGHT - xx GAME_PADDING - FONT_SIZE - LINE_SIZE * 10, 58, "KEY", tprint("%", game.player.key), C_KEY, 0.0);
+    LINE_SIZE :: FONT_SIZE + 5;
+    HUD_TOP :: RENDER_HEIGHT - xx GAME_PADDING - FONT_SIZE;
+
+    draw_hud_stat(xx GAME_PADDING, HUD_TOP, 100, "LVL", tprint("%", get_player_level()), .{1,1,1,1}, 0.0);
+    draw_hud_stat(xx GAME_PADDING, HUD_TOP - LINE_SIZE, 98, "EXP", tprint("%", game.player.exp), C_EXP, 0.0);
+    draw_hud_stat(xx GAME_PADDING, HUD_TOP - LINE_SIZE * 2, 98, "LIF", tprint("%/%", game.player.lif, game.player.lif_max), C_LIF, 0.0);
+    draw_hud_stat(xx GAME_PADDING, HUD_TOP - LINE_SIZE * 3, 98, "STM", tprint("%/%", game.player.stm, game.player.stm_max), C_STM, 0.0);
+    
+    draw_hud_stat(xx GAME_PADDING, HUD_TOP - LINE_SIZE * 5, 58, "ATK", tprint("%", game.player.atk), C_ATK, 0.0);
+    draw_hud_stat(xx GAME_PADDING, HUD_TOP - LINE_SIZE * 6, 58, "DEF", tprint("%", game.player.def), C_DEF, 0.0);
+    draw_hud_stat(xx GAME_PADDING, HUD_TOP - LINE_SIZE * 7, 58, "RCV", tprint("%", game.player.rcv), C_RCV, 0.0);
+
+    draw_hud_stat(xx GAME_PADDING, HUD_TOP - LINE_SIZE * 9, 58, "GOL", tprint("%", game.player.gol), C_GOL, 0.0);
+    draw_hud_stat(xx GAME_PADDING, HUD_TOP - LINE_SIZE * 10, 58, "KEY", tprint("%", game.player.key), C_KEY, 0.0);
+
     Simp.set_shader_for_color();
 }
 
