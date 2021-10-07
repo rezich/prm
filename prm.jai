@@ -91,9 +91,12 @@ render_hud :: () {
 
 draw_hud_stat :: (x: s64, y: s64, width: s64, label: string, value_label: string, color: Vector4, progress: float) {
     Simp.set_shader_for_color();
-    Simp.immediate_quad(xx x - 2.0, cast(float) y + xx FONT_SIZE + 2.0, cast(float) x + xx string_width(label) + 2.0, cast(float) y - 2.0, color);
-    Simp.draw_text(game.font, x, y, label, .{0,0,0,1});
-    Simp.draw_text(game.font, x + string_width(label) + 4, y, value_label, color);
+    label_width := Simp.prepare_text(game.font, label);
+    Simp.immediate_quad(xx x - 2.0, cast(float) y + xx FONT_SIZE + 2.0, cast(float) x + xx label_width + 2.0, cast(float) y - 2.0, color);
+    Simp.generate_quads_for_prepared_text(game.font, x, y, 0);
+    Simp.draw_generated_quads(game.font, .{0,0,0,1});
+    //Simp.draw_text(game.font, x, y, label, .{0,0,0,1});
+    Simp.draw_text(game.font, x + label_width + 4, y, value_label, color);
 }
 
 update_player :: (dt: float) {

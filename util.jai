@@ -22,9 +22,15 @@ per_frame_update_mouse_position :: () {
     }
 }
 
-string_width :: (str: string) -> int #deprecated "This needs to be factored out at some point." {
+/*string_width :: (str: string) -> int #deprecated "This needs to be factored out at some point." {
     return Simp.get_string_width_in_pixels(game.font, str) - 1;
 }
+
+instead, do: 
+    width := Simp.prepare_text(font, text);
+    Simp.generate_quads_for_prepared_text(font, x, y, 0);
+    Simp.draw_generated_quads(font, color);
+*/
 
 input_pressed :: (key: Key_Code) -> bool {
     return cast(bool) (input_button_states[key] & Key_Current_State.START);
